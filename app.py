@@ -36,7 +36,7 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # --- 4. MAIN INTERFACE ---
 st.markdown('<p class="main-title">Greenwich Navigator</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-text">Official Word-Doc Based Advisor</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Greenwich ChatBot</p>', unsafe_allow_html=True)
 
 if not knowledge_base:
     st.error(f"❌ File `{DOCX_FILE}` not found. Please upload it to your project folder.")
