@@ -45,7 +45,7 @@ if not knowledge_base:
 # Initialize Chat
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! I have loaded the **GREEENWICH.docx** manual. How can I help you with policies today?"}
+        {"role": "assistant", "content": "Hello! I am **GREEENWICH.AI** **Chat Bot**. How can I help you with policies today?"}
     ]
 
 for msg in st.session_state.messages:
