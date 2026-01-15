@@ -1,104 +1,59 @@
 import streamlit as st
-import pdfplumber
+import docx  # For GREENWICH.docx
 from groq import Groq
 import os
 
-# --- 1. PAGE CONFIG & PROFESSIONAL STYLE ---
-st.set_page_config(page_title="Greenwich", page_icon="🛡️", layout="centered")
+# --- 1. PAGE CONFIG & STYLE ---
+st.set_page_config(page_title="Greenwich Navigator", page_icon="🏫", layout="centered")
 
-# Custom CSS for a clean, professional "Executive" look
 st.markdown("""
     <style>
-    /* Main Title Styling */
-    .main-title {
-        font-size: 3.5rem !important;
-        font-weight: 800 !important;
-        color: #1E1E1E;
-        text-align: center;
-        margin-top: -50px;
-        letter-spacing: -1px;
-    }
-    .sub-text {
-        text-align: center;
-        color: #555;
-        font-size: 1.2rem;
-        margin-bottom: 40px;
-        font-style: italic;
-    }
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background-color: #F0F2F6;
-        border-right: 1px solid #e0e0e0;
-    }
-    /* Chat Bubble Tweaks */
-    .stChatMessage {
-        border-radius: 15px;
-    }
+    .main-title { font-size: 3rem !important; font-weight: 800 !important; color: #00472F; text-align: center; }
+    .sub-text { text-align: center; color: #DAA520; font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; }
     </style>
-""", unsafe_allow_html=True) # Corrected from unsafe_allow_stdio
+""", unsafe_allow_html=True)
 
-# --- 2. CONNECT TO GROQ CLOUD ---
-if "GROQ_API_KEY" not in st.secrets:
-    st.error("⚠️ API Key missing! Add GROQ_API_KEY to your Streamlit Secrets.")
-    st.stop()
-
-client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-
-# --- 3. OPTIMIZED KNOWLEDGE ENGINE ---
-PDF_FILE = "Academic-Policy-Manual-for-Students3.pdf"
+# --- 2. KNOWLEDGE ENGINE (DOCX ONLY) ---
+DOCX_FILE = "GREENWICH.docx"
 
 @st.cache_data
-def load_university_manual():
-    if not os.path.exists(PDF_FILE):
+def load_greenwich_data():
+    if not os.path.exists(DOCX_FILE):
         return None
-    full_text = ""
-    with pdfplumber.open(PDF_FILE) as pdf:
-        # Load the most relevant pages for speed
-        for page in pdf.pages[:30]: 
-            content = page.extract_text()
-            if content: full_text += content + "\n"
-    return full_text
+    
+    doc = docx.Document(DOCX_FILE)
+    full_text = []
+    for para in doc.paragraphs:
+        if para.text.strip():  # Only add non-empty lines
+            full_text.append(para.text)
+    
+    return "\n".join(full_text)
 
-manual_text = load_university_manual()
+knowledge_base = load_greenwich_data()
 
-# --- 4. PROFESSIONAL SIDEBAR ---
-with st.sidebar:
-    st.markdown("## 🛡️ Greenwich")
-    st.caption("v2.5 • Premium Academic Intelligence")
-    st.divider()
-    st.markdown("### 📋 Active Policies")
-    st.info("""
-    - **Grading Criteria** 2025
-    - **Attendance Rules** (80%)
-    - **GPA/Probation** Limits
-    - **Exam Regulations**
-    """)
-    st.divider()
-    if st.button("🔄 Start New Session", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
+# --- 3. GROQ CLIENT ---
+client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
-# --- 5. MAIN INTERFACE ---
-st.markdown('<p class="main-title">MiRGPT</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-text">Intelligent University Policy Navigator</p>', unsafe_allow_html=True)
+# --- 4. MAIN INTERFACE ---
+st.markdown('<p class="main-title">Greenwich Navigator</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Official Word-Doc Based Advisor</p>', unsafe_allow_html=True)
 
-if not manual_text:
-    st.error(f"❌ Document `{PDF_FILE}` not found. Please check your GitHub files.")
+if not knowledge_base:
+    st.error(f"❌ File `{DOCX_FILE}` not found. Please upload it to your project folder.")
     st.stop()
 
-# Initialize Chat History
+# Initialize Chat
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Assalam o Alaikum! I am **MiRGPT**. I have analyzed your university's academic manual. How can I help you today?"}
+        {"role": "assistant", "content": "Hello! I have loaded the **GREENWICH.docx** manual. How can I help you with policies today?"}
     ]
 
-# Display Chat History
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# User Input & High-Speed Streaming
-if prompt := st.chat_input("Ask about attendance, GPA, or policies..."):
+# User Input & Logic
+if prompt := st.chat_input("Ask me anything from the Greenwich doc..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -108,11 +63,10 @@ if prompt := st.chat_input("Ask about attendance, GPA, or policies..."):
         full_response = ""
         
         try:
-            # Using the new 2026-supported model: llama-3.1-8b-instant
             stream = client.chat.completions.create(
                 model="llama-3.1-8b-instant",
                 messages=[
-                    {"role": "system", "content": f"You are MiRGPT, a professional academic advisor. Use ONLY this text to answer: {manual_text[:15000]}. Be formal, precise, and helpful."},
+                    {"role": "system", "content": f"You are the Greenwich Navigator. Use ONLY this text to answer: {knowledge_base[:20000]}. Be formal and precise."},
                     {"role": "user", "content": prompt}
                 ],
                 stream=True, 
@@ -127,4 +81,4 @@ if prompt := st.chat_input("Ask about attendance, GPA, or policies..."):
             st.session_state.messages.append({"role": "assistant", "content": full_response})
             
         except Exception as e:
-            st.error(f"Brain Error: {e}")
+            st.error(f"Error: {e}")
