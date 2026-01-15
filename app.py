@@ -14,7 +14,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 2. KNOWLEDGE ENGINE (DOCX ONLY) ---
-DOCX_FILE = "GREENWICH.docx"
+DOCX_FILE = "GREEENWICH.docx"
 
 @st.cache_data
 def load_greenwich_data():
