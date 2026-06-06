@@ -4,7 +4,7 @@ from groq import Groq
 import os
 
 # --- 1. PAGE CONFIG & STYLE ---
-st.set_page_config(page_title="Greenwich Navigator", page_icon="🏫", layout="centered")
+st.set_page_config(page_title="Meem Raa", page_icon="🏫", layout="centered")
 
 st.markdown("""
     <style>
@@ -35,8 +35,8 @@ knowledge_base = load_greenwich_data()
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # --- 4. MAIN INTERFACE ---
-st.markdown('<p class="main-title">Greenwich Navigator</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-text">Greenwich ChatBot</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-title">Meem Raa</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Meem Raa's ChatBot</p>', unsafe_allow_html=True)
 
 if not knowledge_base:
     st.error(f"❌ File `{DOCX_FILE}` not found. Please upload it to your project folder.")
@@ -45,7 +45,7 @@ if not knowledge_base:
 # Initialize Chat
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! I am **GREEENWICH.AI** **Chat Bot**. How can I help you with policies today?"}
+        {"role": "assistant", "content": "Hello! I am **Meem Raa** **Chat Bot**. How can I help you with policies today?"}
     ]
 
 for msg in st.session_state.messages:
