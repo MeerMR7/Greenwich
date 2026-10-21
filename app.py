@@ -64,7 +64,7 @@ if prompt := st.chat_input("Ask me anything from the Greenwich doc..."):
         
         try:
             stream = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model="openai/gpt-oss-20b",
                 messages=[
                     {"role": "system", "content": f"You are the Greenwich Navigator. Use ONLY this text to answer: {knowledge_base[:20000]}. Be formal and precise."},
                     {"role": "user", "content": prompt}
