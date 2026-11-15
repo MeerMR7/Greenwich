@@ -11,7 +11,7 @@ st.markdown("""
     .main-title { font-size: 3rem !important; font-weight: 800 !important; color: #00472F; text-align: center; }
     .sub-text { text-align: center; color: #DAA520; font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; }
     
-    /* --- HIDE GITHUB LINK, TOOLBAR, & FOOTER --- */
+    /* --- HIDE DEFAULT GITHUB TOOLBAR ICON & FOOTER --- */
     [data-testid="stToolbar"] {visibility: hidden !important;}
     #MainMenu {visibility: hidden !important;}
     footer {visibility: hidden !important;}
