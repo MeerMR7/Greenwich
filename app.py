@@ -35,8 +35,8 @@ knowledge_base = load_greenwich_data()
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # --- 4. MAIN INTERFACE ---
-st.markdown('<p class="main-title">Meem Raa</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-text">Meem Raa Chatbot</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-title">Data Vibe</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Data Vibe Chatbot</p>', unsafe_allow_html=True)
 
 if not knowledge_base:
     st.error(f"❌ File `{DOCX_FILE}` not found. Please upload it to your project folder.")
